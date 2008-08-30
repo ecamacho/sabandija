@@ -1,0 +1,22 @@
+<html>
+  <head>
+    <link type="text/css" rel="stylesheet" href="/stylesheets/main.css" />
+  </head>
+	
+  <body>
+  	<form action="/search" method="post">
+      <div><input type="text" name="keyword" id="keyword" /></div>
+      <div><input type="submit" value="Search"></div>
+    </form>
+    <br/>
+    {% if keyword %}
+    	results for {{ keyword }}: <br/> 
+    {% endif %}
+    <ul>    
+    {% for artifact in artifacts %}
+      <li>{{ artifact.className }} <a href='{{ artifact.url }}{{ artifact.jarName }}.jar'>download</a></li>
+    {% endfor %}
+	</ul>    
+  </body>
+</html>
+

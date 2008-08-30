@@ -8,6 +8,12 @@ handlers:
 - url: /stylesheets
   static_dir: stylesheets
 
+- url: /load
+  script: sabandija_loader.py
+
 - url: /.*
   script: sabandija.py
+
+  
+  
 
