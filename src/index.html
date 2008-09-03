@@ -14,7 +14,7 @@
     {% endif %}
     <ul>    
     {% for artifact in artifacts %}
-      <li>{{ artifact.className }} <a href='{{ artifact.url }}{{ artifact.jarName }}.jar'>download</a></li>
+      <li>{{ artifact.name }} <a href='{{ artifact.url }}{{ artifact.jarName }}.jar'>download</a></li>
     {% endfor %}
 	</ul>    
   </body>

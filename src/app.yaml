@@ -8,8 +8,28 @@ handlers:
 - url: /stylesheets
   static_dir: stylesheets
 
+- url: /gwt
+  static_dir: gwt
+
+- url: /load_classes
+  script: sabandija_classes_loader.py
+
 - url: /load
   script: sabandija_loader.py
+
+- url: /
+  script: sabandija.py
+
+
+- url: /search
+  script: sabandija.py
+
+  
+- url: /(.*)
+  static_files: gwt/\1
+  upload: gwt/(.*)
+
+
 
 - url: /.*
   script: sabandija.py
