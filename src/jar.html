@@ -1,0 +1,57 @@
+<html>
+  <head>
+    <link type="text/css" rel="stylesheet" href="/stylesheets/main.css" />
+  </head>
+	
+  <body>
+  	
+    Jar file: {{ jar.jar_name }}: <br/> 
+    
+    <table>
+    	<thead>
+    		<tr>
+    			<th>
+    				Maven artifacts: 
+    			</th>
+    		</tr>
+    	</thead>
+    	<tbody>
+    		{% for art in artifacts %}
+    		<tr>
+    			<td>
+    				GroupId
+    			</td>
+    			<td>
+    				{{ art.groupId }}	
+    			</td>	
+    		</tr>
+    		<tr>
+    			<td>
+    				ArtifactId
+    			</td>
+    			<td>
+    				{{ art.artifactId }}	
+    			</td>	
+    		</tr>
+    		<tr>
+    			<td>
+    				Version
+    			</td>
+    			<td>
+    				{{ art.version }}	
+    			</td>    			
+    		</tr>
+    		<tr>
+    			<td>
+    				Link
+    			</td>
+    			<td>
+    				<a href='{{ art.url }}'>download</a>	
+    			</td>	
+    		</tr>
+    		{% endfor %}
+    	</tbody>
+    </table>
+  </body>
+</html>
+

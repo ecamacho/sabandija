@@ -8,20 +8,23 @@ import logging
 class ClazzLoader( bulkload.Loader ):
   def __init__( self ):    
     bulkload.Loader.__init__( self, 'Clazz',
-                              [ ( 'url'         , str ),                                                                
-                                ( 'className'   , str )
-                               # ( 'sbjModified' , str )
-                              ] )
+                              [ 
+                                ( 'jar_name', str ),                                                                                                
+                                ( 'class_name' , str )                               
+                              ] 
+                            )
 
   def HandleEntity( self, entity ):
-   #Obtain the Artifact entity associated to this model   
-   url = entity['url']   
-   art = datastore.Query('Artifact', {'url': url}).Get(1)  
-   if art[0]:       
-       newent = datastore.Entity( 'Clazz' )
-       newent[ 'artifact' ] = art[0].key()
-       newent[ 'className' ] = entity['className']
-       ent = search.SearchableEntity( newent )
+   #Obtain the Jar entity associated to this model   
+   j_name = entity[ 'jar_name' ]
+   #key    = db.Key(j_name)  
+   #jar        = db.get(key)
+   jar    = datastore.Query( 'Jar', { 'jar_name': j_name } ).Get( 1 )  
+   if jar[0]:       
+       newent                = datastore.Entity( 'Clazz' )
+       newent[ 'jar' ]       = jar[0].key()
+       newent[ 'class_name' ] = entity[ 'class_name' ]
+       ent                   = search.SearchableEntity( newent )
        return ent
    else:    
        logging.info("not done :-(")

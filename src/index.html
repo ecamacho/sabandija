@@ -11,12 +11,52 @@
     <br/>
     {% if keyword %}
     	results for {{ keyword }}: <br/> 
-    {% endif %}
-    <ul>    
-    {% for artifact in artifacts %}
-      <li>{{ artifact.name }} <a href='{{ artifact.url }}{{ artifact.jarName }}.jar'>download</a></li>
-    {% endfor %}
-	</ul>    
+    
+    <table>
+    	<tr>
+    		<td>
+    			<table>
+    				<thead>
+    					<tr>
+    						<th>
+    							Jars found: {{ jars_count }}
+    						</th>
+    					</tr>
+    				</thead>
+    				<tbody>
+    					{% for jar in jars %}
+    					<tr>
+    						<td>
+    							{{ jar.jar_name }} <a href='jar?jar={{ jar.jar_name }}'>more</a>
+    						</td>	
+    					</tr>
+    					{% endfor %}
+    				</tbody>
+    			</table>
+    		</td>
+    		<td>
+    			<table>
+    				<thead>
+    					<tr>
+    						<th>
+    							Classes found: {{ clazzes_count }}
+    						</th>
+    					</tr>
+    				</thead>
+    				<tbody>
+    					{% for clazz in clazzes %}
+    					<tr>
+    						<td>
+    							{{ clazz.class_name }} <a href='clazz?clazz={{ clazz.class_name }}'>more</a>
+    						</td>
+    					</tr>
+    					{% endfor %}
+    				</tbody>
+    			</table>
+    		</td>
+    	</tr>
+    </table>
+   {% endif %}         
   </body>
 </html>
 

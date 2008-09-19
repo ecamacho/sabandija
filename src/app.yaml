@@ -23,7 +23,13 @@ handlers:
 
 - url: /search
   script: sabandija.py
+  
+  
+- url: /jar
+  script: sabandija.py
 
+- url: /clazz
+  script: sabandija.py
   
 - url: /(.*)
   static_files: gwt/\1

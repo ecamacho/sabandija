@@ -1,0 +1,33 @@
+<html>
+  <head>
+    <link type="text/css" rel="stylesheet" href="/stylesheets/main.css" />
+  </head>
+	
+  <body>
+  	
+    Class: {{ keyword }}: <br/> 
+    
+    <table>
+    	<thead>
+    		<tr>
+    			<th>
+    				Jar files containing the class: 
+    			</th>
+    		</tr>
+    	</thead>
+    	<tbody>
+    		{% for c in clazzes %}
+    		<tr>
+    			<td>
+    				Jar
+    			</td>
+    			<td>
+    				<a href='jar?jar={{ c.jar.jar_name }}'>{{ c.jar.jar_name }}</a>	
+    			</td>	
+    		</tr>
+    		{% endfor %}
+    	</tbody>
+    </table>
+  </body>
+</html>
+
