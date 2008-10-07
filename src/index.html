@@ -1,14 +1,18 @@
 <html>
   <head>
     <link type="text/css" rel="stylesheet" href="/stylesheets/main.css" />
+    
   </head>
-	
+  
   <body>
   	<form action="/search" method="post">
+  	  <input type="hidden" name="c_offset" value="1"/>
+  	  <input type="hidden" name="j_offset" value="1"/>
       <div><input type="text" name="keyword" id="keyword" /></div>
       <div><input type="submit" value="Search"></div>
     </form>
     <br/>
+    
     {% if keyword %}
     	results for {{ keyword }}: <br/> 
     
@@ -52,6 +56,18 @@
     					</tr>
     					{% endfor %}
     				</tbody>
+    				{% if c_more %}
+    				<tfoot>
+    					<tr>
+    					<form action="/search" method="post" id="c_form" >
+    						<input type="hidden" name="keyword" value="{{ keyword }}"/>
+    						<input type="hidden" name="c_offset" value="{{ c_offset|add:"1" }}"/>
+    						<input type="hidden" name="j_offset" value="{{ j_offset }}"/>
+    						<td><a href="#" onclick="document.getElementById('c_form').submit()">next</a></td>
+    					</form>	
+    					</tr>
+    				</tfoot>
+    				{% endif %}
     			</table>
     		</td>
     	</tr>

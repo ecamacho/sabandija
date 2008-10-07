@@ -1,11 +1,7 @@
-<html>
-  <head>
-    <link type="text/css" rel="stylesheet" href="/stylesheets/main.css" />
-  </head>
-	
-  <body>
-  	
-    Jar file: {{ jar.jar_name }}: <br/> 
+{% extends "template.html" %}
+{% block main_body %}
+
+  	Jar file: {{ jar.jar_name }}: <br/> 
     
     <table>
     	<thead>
@@ -46,12 +42,13 @@
     				Link
     			</td>
     			<td>
-    				<a href='{{ art.url }}'>download</a>	
+    				{% for l in art.locations %}
+    				<a href='{{ l.url }}'>download</a>&nbsp;
+    				{% endfor %}	
     			</td>	
     		</tr>
     		{% endfor %}
     	</tbody>
     </table>
-  </body>
-</html>
+  {% endblock %}
 

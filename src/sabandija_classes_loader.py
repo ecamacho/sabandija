@@ -16,18 +16,22 @@ class ClazzLoader( bulkload.Loader ):
 
   def HandleEntity( self, entity ):
    #Obtain the Jar entity associated to this model   
-   j_name = entity[ 'jar_name' ]
-   #key    = db.Key(j_name)  
-   #jar        = db.get(key)
-   jar    = datastore.Query( 'Jar', { 'jar_name': j_name } ).Get( 1 )  
-   if jar[0]:       
-       newent                = datastore.Entity( 'Clazz' )
-       newent[ 'jar' ]       = jar[0].key()
-       newent[ 'class_name' ] = entity[ 'class_name' ]
-       ent                   = search.SearchableEntity( newent )
-       return ent
+   j_name = entity[ 'jar_name' ]   
+   jar    = datastore.Query( 'Jar', { 'jar_name': j_name } ).Get( 1 )
+     
+   if len( jar ) > 0:       
+       old_class              = datastore.Query( 'Clazz', { 'class_name': entity[ 'class_name' ] } ).Get( 1 )
+       if old_class:
+           logging.info("ya existe")
+       else:    
+           logging.info("creando")
+           newent                 = datastore.Entity( 'Clazz' )
+           newent[ 'jar' ]        = jar[0].key()
+           newent[ 'class_name' ] = entity[ 'class_name' ]
+           ent                    = search.SearchableEntity( newent )
+           return ent
    else:    
-       logging.info("not done :-(")
+       logging.error( "Failed to insert class " + entity[ 'class_name' ] + " parent jar does not exist: " + j_name )
        
 if __name__ == '__main__':
   bulkload.main( ClazzLoader() )

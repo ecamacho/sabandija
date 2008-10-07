@@ -1,0 +1,126 @@
+{% extends "template.html" %}
+{% block main_body %}
+<!-- search form-->
+<div class="grid_9 alfa" id="search_div">
+	<div class="legend">search for java classes and jar files</div>
+		<div class="search_form">
+			<form action="/search" method="post">		
+				<input type="hidden" name="c_offset" value="1"/>
+  	  			<input type="hidden" name="j_offset" value="1"/>				
+				<input type="text" name="keyword" class="search_input" value="{{keyword}}"/>
+				<input type="submit" value="search" class="search_button"/>
+			</form>
+		</div>
+	<div class="examples">eg. ApplicationContext, spring-2.5</div>
+</div>			
+
+{% if keyword %}
+<!-- jars -->
+<div class="grid_9 " id="results_div">
+	<div class="result_header">&nbsp;Jars found <span>page {{ j_offset }}</span></div>
+		<ul class="result_list">
+		{% for jar in jars %}
+			<li><span>{{ jar.jar_name }}</span> <a href='jar?jar={{ jar.jar_name }}'>details</a><br/>
+			{% for art in jar.artifacts %}
+				<div id="linkpom_{{ jar.jar_name }}">maven pom: <a href="#no_follow" onclick="showpom('pom_{{ jar.jar_name }}');">view</a></div>
+				<div class="mvn_pom" id="pom_{{ jar.jar_name }}" style="display: none;">
+					<pre class="prettyprint lang-xml">						
+&lt;dependency&gt;
+&nbsp;&lt;groupId&gt;{{art.groupId}}&lt;/groupId&gt;
+&nbsp;&lt;artifactId&gt;{{art.artifactId}}&lt;/artifactId&gt;
+&nbsp;&lt;version&gt;{{art.version}}&lt;/version&gt;
+&lt;/dependency&gt;
+	    			</pre> 	 	
+				</div>
+			{% endfor %}	
+				<div class="result_repos">
+					download it from:
+					{% for art in jar.artifacts %}
+						{% for l in art.locations %}    				    				
+						<a href="{{ l.url }}" class="repo_link">{{ l.repository|mvnrepo }}</a>&nbsp; 							
+						{% endfor %}	
+					{% endfor %}
+				</div>
+			</li>
+		{% endfor %}
+		</ul>
+		{% if j_more %}
+		<form action="/search" method="post" id="j_form" >
+			<input type="hidden" name="keyword" value="{{ keyword }}"/>
+    		<input type="hidden" name="c_offset" value="{{ c_offset }}"/>
+    		<input type="hidden" name="j_offset" value="{{ j_offset|add:"1" }}"/>
+			<div class="result_footer"><a href="#no_follow" onclick="document.getElementById('j_form').submit()">next</a></div>
+		</form>
+		{% endif %}
+	</div><!--  jars -->
+
+	<!-- classes found-->
+	<div class="grid_9 omega" id="results_div">
+		<div class="result_header">&nbsp;Classes found <span>page {{c_offset }}</span></div>
+			<ul class="result_list">
+			{% if too_many_classes %}
+				<li><span>too many results found, please refine your search.</span></li>
+			{% endif %}
+			{% for clazz in clazzes %}
+				<li><span>{{ clazz.class_name}}</span> <a href='clazz?clazz={{ clazz.class_name }}'>details</a><br/>
+					in jar <a href="jar?jar={{ clazz.jar.jar_name }}">{{ clazz.jar.jar_name }}</a><br/>
+					<div id="linkpom_{{ clazz.class_name }}_{{ clazz.jar_name }}">maven pom: <a href="#no_follow" onclick="showpom('pom_{{ clazz.class_name }}_{{ clazz.jar_name }}');">view</a></div>
+					{% for art in clazz.jar.artifacts %}
+						<div class="mvn_pom" id="pom_{{ clazz.class_name }}_{{ clazz.jar_name }}" style="display: none;">
+							<pre class="prettyprint lang-xml">						
+&lt;dependency&gt;
+&nbsp;&lt;groupId&gt;{{art.groupId}}&lt;/groupId&gt;
+&nbsp;&lt;artifactId&gt;{{art.artifactId}}&lt;/artifactId&gt;
+&nbsp;&lt;version&gt;{{art.version}}&lt;/version&gt;
+&lt;/dependency&gt;
+	    					</pre> 	 	
+					</div>
+					{% endfor %}
+					<div class="result_repos">
+					download it from:&nbsp;
+					{% for art in clazz.jar.artifacts %}
+						{% for l in art.locations %}    				    				
+						<a href="{{ l.url }}" class="repo_link">{{ l.repository|mvnrepo }}</a>&nbsp; 							
+						{% endfor %}	
+					{% endfor %}
+					</div>
+				</li>
+				{% endfor %}										
+			</ul>
+			{% if c_more %}
+			<form action="/search" method="post" id="c_form" >
+				<input type="hidden" name="keyword" value="{{ keyword }}"/>
+    			<input type="hidden" name="c_offset" value="{{ c_offset|add:"1" }}"/>
+    			<input type="hidden" name="j_offset" value="{{ j_offset }}"/>
+				<div class="result_footer"><a href="#no_follow" onclick="document.getElementById('c_form').submit()">next</a></div>
+			</form>	
+			{% endif %}
+	</div><!--  classes -->
+		{% endif %} <!--  if keyword -->
+</div><!-- app div-->
+   	<div class="grid_3 ">
+	<!-- last searches -->
+	<div class="grid_3 alfa " id="history_div">
+		<div class="history_panel">
+			<span>last global searches</span>
+			<ul>
+				<li><a href="#no_follow">ActionForm</a></li>
+				<li><a href="#no_follow">mysql_connector</a></li>
+				<li><a href="#no_follow">Activation</a></li>
+				<li><a href="#no_follow">MavenArtifact</a></li>
+				<li><a href="#no_follow">org.hibernate.Criteria</a></li>
+			</ul>
+		</div>
+	<br/><br/>
+	<div class="history_panel">
+		<span>your last searches</span>
+		<ul>
+			<li><a href="#no_follow">ActionForm</a></li>
+			<li><a href="#no_follow">mysql_connector</a></li>
+			<li><a href="#no_follow">Activation</a></li>
+			<li><a href="#no_follow">MavenArtifact</a></li>
+			<li><a href="#no_follow">org.hibernate.Criteria</a></li>
+		</ul>
+	</div>
+</div>		
+{% endblock %}
