@@ -183,6 +183,20 @@ class SearchClass( webapp.RequestHandler ):
                 
     path = os.path.join( os.path.dirname(__file__), 'clazz.html' )
     self.response.out.write( template.render( path, template_values ) )
+    
+#Class used to autocomplete the search input field
+class AutocompleteClass( webapp.RequestHandler ):
+    def get( self ):
+        keyword = self.request.get( 'q' )
+        if keyword:
+            q = Clazz.all().search( keyword )
+            results = q.fetch( 25 )
+            artifacts = ""
+            for r in results:
+                artifacts += r.class_name +'\n'
+            #self.response.headers['Content-Type'] = 'application/json'
+            self.response.out.write(  artifacts  )
+            
 
 class DeleteAll( webapp.RequestHandler ):
   def get( self ):
@@ -199,10 +213,11 @@ class DeleteAll( webapp.RequestHandler ):
 
 def main():
   application = webapp.WSGIApplication( [ 
-                                          ( '/'      , MainPage ), 
-                                          ( '/search', SearchPage ), 
-                                          ( '/jar'   , SearchJar ),
-                                          ( '/clazz'   , SearchClass ),
+                                          ( '/'             , MainPage ), 
+                                          ( '/search'       , SearchPage ), 
+                                          ( '/jar'          , SearchJar ),
+                                          ( '/clazz'        , SearchClass ),
+                                          ( '/autocomplete' , AutocompleteClass ),
                                           ( '/borrartodo'   , DeleteAll )
                                         ],
                                         debug = True)

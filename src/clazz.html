@@ -1,33 +1,14 @@
-<html>
-  <head>
-    <link type="text/css" rel="stylesheet" href="/stylesheets/main.css" />
-  </head>
-	
-  <body>
-  	
-    Class: {{ keyword }}: <br/> 
-    
-    <table>
-    	<thead>
-    		<tr>
-    			<th>
-    				Jar files containing the class: 
-    			</th>
-    		</tr>
-    	</thead>
-    	<tbody>
-    		{% for c in clazzes %}
-    		<tr>
-    			<td>
-    				Jar
-    			</td>
-    			<td>
-    				<a href='jar?jar={{ c.jar.jar_name }}'>{{ c.jar.jar_name }}</a>	
-    			</td>	
-    		</tr>
-    		{% endfor %}
+{% extends "template.html"%}
+{% block main_body %}  	
+<div class="grid_2 " >
+	<div class="grid_6 " id="details">
+    	<div class="details_header">{{ keyword }}</div>
+    	Jar files containing the class:
+    	<ul> 
+    	{% for c in clazzes %}
+    		<li> <a href='jar?jar={{ c.jar.jar_name }}'>{{ c.jar.jar_name }}.jar</a></li>	    		
+    	{% endfor %}
+    	</ul>	
     	</tbody>
     </table>
-  </body>
-</html>
-
+{% endblock %}

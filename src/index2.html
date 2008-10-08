@@ -1,4 +1,29 @@
 {% extends "template.html" %}
+
+{% block jquery_block %}
+<script type="text/javascript">
+	$(document).ready(function(){
+		var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+		$("#keyword").autocomplete("autocomplete", {			
+			selectFirst: false
+			});
+		
+		$(".mvn_pom").hide();
+		{% for jar in jars %}	
+		$("#bp_{{ forloop.counter }}").click(function(){
+		  $("#pom_{{ forloop.counter }}").slideToggle(500);
+		});
+		{% endfor %}
+		{% for clazz in clazzes %}	
+		$("#bc_{{ forloop.counter }}").click(function(){
+		  $("#pomc_{{ forloop.counter }}").slideToggle(500);
+		});
+		{% endfor %}
+
+	});		
+					
+</script>
+{% endblock %}
 {% block main_body %}
 <!-- search form-->
 <div class="grid_9 alfa" id="search_div">
@@ -7,7 +32,7 @@
 			<form action="/search" method="post">		
 				<input type="hidden" name="c_offset" value="1"/>
   	  			<input type="hidden" name="j_offset" value="1"/>				
-				<input type="text" name="keyword" class="search_input" value="{{keyword}}"/>
+				<input type="text" name="keyword" id="keyword" class="search_input" value="{{keyword}}"/>
 				<input type="submit" value="search" class="search_button"/>
 			</form>
 		</div>
@@ -17,13 +42,13 @@
 {% if keyword %}
 <!-- jars -->
 <div class="grid_9 " id="results_div">
-	<div class="result_header">&nbsp;Jars found <span>page {{ j_offset }}</span></div>
+	<div class="result_header">&nbsp;&nbsp;Jars found <span>page {{ j_offset }}</span></div>
 		<ul class="result_list">
 		{% for jar in jars %}
 			<li><span>{{ jar.jar_name }}</span> <a href='jar?jar={{ jar.jar_name }}'>details</a><br/>
 			{% for art in jar.artifacts %}
-				<div id="linkpom_{{ jar.jar_name }}">maven pom: <a href="#no_follow" onclick="showpom('pom_{{ jar.jar_name }}');">view</a></div>
-				<div class="mvn_pom" id="pom_{{ jar.jar_name }}" style="display: none;">
+				<div id="linkpom_{{ jar.jar_name }}">maven pom: <a href="#no_follow" id="bp_{{ forloop.parentloop.counter }}">view</a></div>
+				<div class="mvn_pom" id="pom_{{ forloop.parentloop.counter }}" >
 					<pre class="prettyprint lang-xml">						
 &lt;dependency&gt;
 &nbsp;&lt;groupId&gt;{{art.groupId}}&lt;/groupId&gt;
@@ -64,9 +89,9 @@
 			{% for clazz in clazzes %}
 				<li><span>{{ clazz.class_name}}</span> <a href='clazz?clazz={{ clazz.class_name }}'>details</a><br/>
 					in jar <a href="jar?jar={{ clazz.jar.jar_name }}">{{ clazz.jar.jar_name }}</a><br/>
-					<div id="linkpom_{{ clazz.class_name }}_{{ clazz.jar_name }}">maven pom: <a href="#no_follow" onclick="showpom('pom_{{ clazz.class_name }}_{{ clazz.jar_name }}');">view</a></div>
+					<div id="linkpom_{{ clazz.class_name }}_{{ clazz.jar_name }}">maven pom: <a href="#no_follow" id="bc_{{ forloop.counter }}">view</a></div>
 					{% for art in clazz.jar.artifacts %}
-						<div class="mvn_pom" id="pom_{{ clazz.class_name }}_{{ clazz.jar_name }}" style="display: none;">
+						<div class="mvn_pom" id="pomc_{{ forloop.parentloop.counter }}" style="display: none;">
 							<pre class="prettyprint lang-xml">						
 &lt;dependency&gt;
 &nbsp;&lt;groupId&gt;{{art.groupId}}&lt;/groupId&gt;

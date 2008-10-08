@@ -30,6 +30,24 @@ handlers:
 
 - url: /clazz
   script: sabandija.py
+
+- url: /borrartodo
+  script: sabandija.py  
+
+- url: /autocomplete
+  script: sabandija.py
+    
+- url: /css/(.*)
+  static_files: css/\1
+  upload: css/(.*)
+  
+- url: /js/(.*)
+  static_files: js/\1
+  upload: js/(.*)
+  
+- url: /images/(.*)
+  static_files: images/\1
+  upload: images/(.*)  
   
 - url: /(.*)
   static_files: gwt/\1

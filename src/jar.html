@@ -1,54 +1,42 @@
 {% extends "template.html" %}
 {% block main_body %}
-
-  	Jar file: {{ jar.jar_name }}: <br/> 
-    
-    <table>
-    	<thead>
-    		<tr>
-    			<th>
-    				Maven artifacts: 
-    			</th>
-    		</tr>
-    	</thead>
-    	<tbody>
-    		{% for art in artifacts %}
-    		<tr>
-    			<td>
-    				GroupId
-    			</td>
-    			<td>
-    				{{ art.groupId }}	
-    			</td>	
-    		</tr>
-    		<tr>
-    			<td>
-    				ArtifactId
-    			</td>
-    			<td>
-    				{{ art.artifactId }}	
-    			</td>	
-    		</tr>
-    		<tr>
-    			<td>
-    				Version
-    			</td>
-    			<td>
-    				{{ art.version }}	
-    			</td>    			
-    		</tr>
-    		<tr>
-    			<td>
-    				Link
-    			</td>
-    			<td>
-    				{% for l in art.locations %}
-    				<a href='{{ l.url }}'>download</a>&nbsp;
-    				{% endfor %}	
-    			</td>	
-    		</tr>
+<div class="grid_2 " >
+<div class="grid_6 " id="details">
+  	<div class="details_header">{{ jar.jar_name }}.jar</div> 
+	  <ul>  
+    	{% for art in artifacts %}
+    	<li>
+    		<span>GroupId:</span>	{{ art.groupId }}
+    	</li>
+    	<li>				
+    		<span>ArtifactId:</span> {{ art.artifactId }}
+    	</li>
+    	<li>				
+    		<span>Version:</span> {{ art.version }}
+    	</li>
+    	<li>				
+    		<span>Maven Model Version:</span> {{ art.modelVersion }}
+    	</li>
+    	<li>				
+    		<span>Jar size:</span> {{ art.size }} bytes
+    	</li>
+    	<li>				
+    		<span>md5 checksum:</span> {{ art.md5 }}
+    	</li>
+    	<li>				
+    		<span>sha1 checksum:</span> {{ art.sha1 }}
+    	</li>
+    	<li>				
+    		<span>Modification date:</span> {{ art.mvnModified }}
+    	</li>    	
+    	<li>				
+    		<span>Download it from:</span>
+    		{% for l in art.locations %}
+    			<a href='{{ l.url }}'>{{ l.repository|mvnrepo }}</a>&nbsp;
     		{% endfor %}
-    	</tbody>
-    </table>
-  {% endblock %}
+    	</li>				
+    	{% endfor %}
+    	</ul>
+ </div>   
+ {% endblock %}
 
